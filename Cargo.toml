@@ -1,0 +1,49 @@
+[package]
+name = "crt-zkvm"
+version = "0.1.0"
+edition = "2021"
+authors = ["CRT-ZKVM Team"]
+description = "Hardened Circuit Registry Template Zero-Knowledge Virtual Machine"
+
+[dependencies]
+blake3 = "1.5"
+rusqlite = { version = "0.30", features = ["bundled"] }
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+rand = "0.8"
+thiserror = "1.0"
+hex = "0.4"
+chrono = "0.4"
+clap = { version = "4.4", features = ["derive"] }
+dirs = "5.0"
+serde_json = "1.0"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[features]
+default = []
+demo = []
+# Security profiles
+security-test = []
+security-production = []
+
+[[bin]]
+name = "crt-zkvm"
+path = "src/main.rs"
+
+[lib]
+name = "crt_zkvm"
+path = "src/lib.rs"
+
+[[bench]]
+name = "field_ops"
+harness = false
+
+[[bench]]
+name = "merkle"
+harness = false
+
+[[bench]]
+name = "proving"
+harness = false

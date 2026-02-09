@@ -1,0 +1,162 @@
+# CRT-ZKVM Shera Blockchain Configuration
+# Native coin: Shera (שרה, Hebrew for "truth")
+
+[chain]
+# Chain identifier
+chain_id = "shera-dev"
+
+# Genesis configuration
+genesis_timestamp = 1700000000
+
+# Genesis allocations (address -> SHERA amount in wei-like units)
+# Format: address = "amount" (amount is in smallest units, 10^18 = 1 SHERA)
+genesis_alloc = [
+    # Example: 1 million SHERA to genesis address
+    { address = "0x0000000000000000000000000000000000000000000000000000000000000001", balance = "1000000000000000000000000" },
+    
+    # Example: 500k SHERA to treasury
+    { address = "0x0000000000000000000000000000000000000000000000000000000000000002", balance = "500000000000000000000000" },
+    
+    # Example: 100k SHERA to development fund
+    { address = "0x0000000000000000000000000000000000000000000000000000000000000003", balance = "100000000000000000000000" },
+]
+
+# Total supply: 100 million SHERA
+# 1 SHERA = 10^18 units (18 decimals)
+total_supply = "100000000000000000000000000"
+
+# Block parameters
+block_time_target = 12  # seconds
+gas_limit_per_block = 30000000
+target_gas_per_block = 15000000
+
+# State management
+state_cache_size = 1000  # Number of accounts to cache
+state_snapshot_interval = 100  # Blocks between automatic snapshots
+
+[token]
+# Shera (SHERA) is the native token with id = 0
+shera_name = "Shera"
+shera_symbol = "SHERA"
+shera_decimals = 18
+
+# Token registration requires burning SHERA as fee
+registration_fee = "1000000000000000000"  # 1 SHERA
+
+# Minimum gas price (in SHERA per gas unit)
+# 1 gwei equivalent = 1,000,000,000
+min_gas_price = "1000000000"
+
+# Token metadata
+max_token_name_length = 64
+max_token_symbol_length = 10
+max_token_decimals = 18
+
+[wallet]
+# Default wallet template (system address for basic wallets)
+default_template = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+# Advanced wallet template with multi-sig support
+multisig_template = "0x0000000000000000000000000000000000000000000000000000000000000001"
+
+# Recovery wallet template
+recovery_template = "0x0000000000000000000000000000000000000000000000000000000000000002"
+
+# Wallet parameters
+max_wallet_nonce = 18446744073709551615  # u64::MAX
+wallet_creation_cost = 0  # Free wallet creation
+
+[gas]
+# Gas cost schedule (in gas units)
+# These define how much gas each operation costs
+
+tx_base_cost = 21000
+data_byte_cost = 16
+deploy_base_cost = 32000
+instruction_cost = 200
+call_base_cost = 700
+storage_write_cost = 20000
+storage_read_cost = 800
+field_op_cost = 10
+verify_proof_cost = 5000
+
+# Refund parameters
+max_refund_quotient = 2  # Max refund is gas_limit / 2
+
+[prover]
+# STARK prover configuration
+security_profile = "Bit128"  # Test, Bit80, Bit128, Bit256
+
+# FRI parameters
+blowup_factor = 16
+fri_queries = 43  # For 128-bit security
+
+# Prover performance
+max_segment_steps = 100
+max_segment_memory_mb = 100
+checkpoint_interval_ms = 100
+
+[storage]
+# SQLite database path
+db_path = "./data/shera.db"
+
+# Enable WAL mode for better concurrency
+wal_mode = true
+
+# Cache settings
+cache_size_mb = 100
+
+# Backup settings
+auto_backup = true
+backup_interval_hours = 24
+backup_retention_days = 7
+
+[network]
+# Network settings (for future P2P implementation)
+network_id = 1
+listen_port = 30303
+max_peers = 50
+
+# Sync settings
+sync_mode = "full"  # full, fast, light
+min_peers_for_sync = 3
+
+[security]
+# Security hardening settings
+
+# Require production security profile
+require_production_security = false  # Set to true for mainnet
+
+# Maximum allowed contract code size (in field elements)
+max_contract_size = 24576  # ~192KB
+
+# Maximum contract call depth
+max_call_depth = 1024
+
+# Deny list for vulnerable templates
+deny_list_enabled = true
+deny_list_update_url = ""
+
+[logging]
+# Logging configuration
+level = "info"  # error, warn, info, debug, trace
+log_file = "./logs/shera.log"
+max_log_size_mb = 100
+max_log_files = 10
+
+# Console output
+console_output = true
+colors_enabled = true
+
+[experimental]
+# Experimental features (use with caution)
+
+# Enable parallel transaction processing
+parallel_execution = false
+
+# Enable state pruning
+state_pruning = false
+pruning_history_blocks = 10000
+
+# Enable debug RPC endpoints
+debug_rpc = false
